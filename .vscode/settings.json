@@ -1,6 +1,6 @@
 {
-  "python.pythonPath": ".env/bin/python3",
-  "editor.fontSize": 13,
+  "python.pythonPath": "/home/dongsiku/Desktop/slack2cups/.env/bin/python3",
+  "editor.fontSize": 14,
   "editor.formatOnSave": true,
   "python.linting.lintOnSave": true,
   "python.linting.pylintEnabled": false,
