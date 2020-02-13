@@ -20,15 +20,24 @@ def text2pdf(text, debug_mode=False):
         'margin-left': '0.4in',
         'encoding': "UTF-8"
     }
+    font_size_px = 20
 
-    filename = datetime.now().strftime('text_%Y%m%d_%H%M%S')
+    if debug_mode is True:
+        filename = "text_temp"
+    else:
+        filename = datetime.now().strftime('text_%Y%m%d_%H%M%S')
     html_filename = "{}.html".format(filename)
     pdf_filename = "{}.pdf".format(filename)
-    if debug_mode is True:
-        html_filename = html_filename.replace(".html", "_temp.html")
-        pdf_filename = pdf_filename.replace(".pdf", "_temp.pdf")
 
-    text_html_head_lines = ["<!DOCTYPE html>\n", "<html>\n", "<body>\n"]
+    text_html_head_lines = [
+        "<!DOCTYPE html>\n",
+        "<head>\n",
+        '<style type = "text/css">',
+        "<!--p {{font-size: {}px;}}--> ".format(font_size_px),
+        '</style>',
+        "</head>\n",
+        "<html>\n",
+        "<body>\n"]
     text_html_tail_lines = ["</body>\n", "</html>\n"]
 
     with open(html_filename, "w") as wf:
@@ -44,7 +53,6 @@ def text2pdf(text, debug_mode=False):
             wf.write(text_html_tail_line)
 
     pdfkit.from_file(html_filename, pdf_filename,
-                     # css='style.css',
                      options=options)
 
 
