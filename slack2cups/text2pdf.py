@@ -1,5 +1,6 @@
 import pdfkit
 from datetime import datetime
+from os import path
 
 
 """
@@ -10,7 +11,7 @@ sudo apt install --fix-broken
 """
 
 
-def text2pdf(text, debug_mode=False):
+def text2pdf(text, project_dirname="./", debug_mode=False):
     # https://wkhtmltopdf.org/usage/wkhtmltopdf.txt
     options = {
         'page-size': 'A4',
@@ -27,7 +28,7 @@ def text2pdf(text, debug_mode=False):
     else:
         filename = datetime.now().strftime('text_%Y%m%d_%H%M%S')
     html_filename = "{}.html".format(filename)
-    pdf_filename = "{}.pdf".format(filename)
+    pdf_filename = path.join(project_dirname, "{}.pdf".format(filename))
 
     text_html_head_lines = [
         "<!DOCTYPE html>\n",
@@ -54,6 +55,8 @@ def text2pdf(text, debug_mode=False):
 
     pdfkit.from_file(html_filename, pdf_filename,
                      options=options)
+
+    return pdf_filename
 
 
 if __name__ == "__main__":

@@ -1,8 +1,12 @@
 from slack import RTMClient
 from pprint import pprint
 from slackbot_settings import slack_token
+import pathlib
+
+from slack2cups.slack2cups import Slack2Cups
 
 user_data = {}
+s2c = Slack2Cups(pathlib.Path(__file__).resolve().parent)
 
 
 def main():
@@ -33,6 +37,7 @@ def get_print_data(**payload):
                     text="Starting to print...",
                     thread_ts=thread_ts
                 )
+                s2c.text2pdf(user_data[data['user']])
             else:
                 web_client.chat_postMessage(
                     channel=channel_id,
@@ -46,7 +51,7 @@ def get_print_data(**payload):
                 text="Are you sure to print this {}".format(data['text']),
                 thread_ts=data['ts']
             )
-            user_data[data['user']] = True
+            user_data[data['user']] = data['text']
 
 
 if __name__ == "__main__":
