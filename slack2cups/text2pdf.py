@@ -6,12 +6,14 @@ from os import path
 """
 wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.stretch_amd64.deb  # WSL-Debian
 wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb  # Ubuntu 18.04
+
 sudo dpkg -i wkhtmltox_0.12.5-1.stretch_amd64.deb
 sudo apt install --fix-broken
+sudo apt install fonts-noto-cjk  # Fonts
 """
 
 
-def text2pdf(text, project_dirname="./", debug_mode=False):
+def text2pdf(text, downloads_dirname="./", debug_mode=False):
     # https://wkhtmltopdf.org/usage/wkhtmltopdf.txt
     options = {
         'page-size': 'A4',
@@ -27,8 +29,8 @@ def text2pdf(text, project_dirname="./", debug_mode=False):
         filename = "text_temp"
     else:
         filename = datetime.now().strftime('text_%Y%m%d_%H%M%S')
-    html_filename = "{}.html".format(filename)
-    pdf_filename = path.join(project_dirname, "{}.pdf".format(filename))
+    html_filename = path.join(downloads_dirname, "{}.html".format(filename))
+    pdf_filename = path.join(downloads_dirname, "{}.pdf".format(filename))
 
     text_html_head_lines = [
         "<!DOCTYPE html>\n",
@@ -61,4 +63,4 @@ def text2pdf(text, project_dirname="./", debug_mode=False):
 
 if __name__ == "__main__":
     from test_variable import sample_text
-    text2pdf(sample_text, True)
+    text2pdf(sample_text, debug_mode=True)
