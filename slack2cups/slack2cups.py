@@ -24,7 +24,7 @@ class Slack2Cups:
         if extension == "pdf":
             pdf2cups(downloaded_filename)
         elif is_imagefile(extension):
-            print("image2pdf(downloaded_filename)")
+            pdf2cups(downloaded_filename)
 
     def text2pdf(self, text):
         pdf_filename = text2pdf(text, self.downloads_dirname)

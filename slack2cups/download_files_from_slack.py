@@ -3,7 +3,6 @@ import codecs
 from os import path
 from pathlib import Path
 
-from test_variable import sample_url_private_download
 from slackbot_settings import slack_token
 
 
@@ -27,4 +26,5 @@ def download_files_from_slack(url_private_download, download_dirname="./"):
 
 
 if __name__ == "__main__":
+    from test_variable import sample_url_private_download
     download_files_from_slack(sample_url_private_download)

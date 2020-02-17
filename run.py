@@ -19,12 +19,13 @@ def get_print_data(**payload):
     global user_data
     data = payload['data']
     web_client = payload['web_client']
-    pprint(data.keys())
 
-    pprint(data)
     if "bot_id" in data:
         pass
     elif "text" in data:
+        pprint(data.keys())
+        pprint(data)
+
         user_data.setdefault(data['user'], False)
         text_from_users = data['text']
         channel_id = data['channel']
@@ -37,7 +38,10 @@ def get_print_data(**payload):
                     text="Starting to print...",
                     thread_ts=thread_ts
                 )
-                s2c.text2pdf(user_data[data['user']])
+                if user_data[data['user']][0] == "text":
+                    s2c.text2pdf(user_data[data['user']][1])
+                else:
+                    s2c.link2cups(user_data[data['user']][1])
             else:
                 web_client.chat_postMessage(
                     channel=channel_id,
@@ -46,12 +50,21 @@ def get_print_data(**payload):
                 )
             user_data[data['user']] = False
         else:
-            web_client.chat_postMessage(
-                channel=data['channel'],
-                text="Are you sure to print this {}".format(data['text']),
-                thread_ts=data['ts']
-            )
-            user_data[data['user']] = data['text']
+            if "files" in data:
+                web_client.chat_postMessage(
+                    channel=data['channel'],
+                    text="Are you sure to print this file?",
+                    thread_ts=data['ts'])
+                user_data[data['user']] = ["files",
+                                           data["files"][0]["url_private_download"]]
+            else:
+                web_client.chat_postMessage(
+                    channel=data['channel'],
+                    text="Are you sure to print this {}?".format(
+                        data['text']),
+                    thread_ts=data['ts']
+                )
+                user_data[data['user']] = ["text", data['text']]
 
 
 if __name__ == "__main__":
