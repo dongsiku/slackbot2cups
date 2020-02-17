@@ -5,3 +5,7 @@ downloads/
 test_variable.py
 *temp*
 sample_image_file*
+installation/wkhtmltox_installer.sh
+installation/wkhtmltox*.deb
+installation/slackbot2cups.service
+wkhtmltox_installer.sh
